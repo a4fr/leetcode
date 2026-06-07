@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: leetcode-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: leetcode
+      POSTGRES_PASSWORD: leetcode
+      POSTGRES_DB: leetcode
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U leetcode -d leetcode"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
